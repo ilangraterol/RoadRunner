@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Eliminación de Grupo{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container text-center">
+        <h1 class="mb-4">Confirmar Eliminación de Grupo</h1>
+        <p class="mb-4">¿Estás seguro de que quieres eliminar el Grupo "{{ grupoproducto.nombre }}"?</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a href="{% url 'grupo_detalle' grupoproducto.id %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

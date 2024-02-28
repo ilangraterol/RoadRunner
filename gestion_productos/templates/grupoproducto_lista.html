@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Grupos de Productos
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">Lista de Grupos de Productos</h1>
+            <a href="{% url 'grupo_crear' %}" class="btn btn-primary">Agregar Nuevo Grupo</a>
+        </div>
+        <ul class="list-group">
+            {% for grupoproducto in object_list %}
+                <li class="list-group-item">
+                    <a href="{% url 'grupo_detalle' grupoproducto.id %}">{{ grupoproducto.nombre }}</a>
+                </li>
+                <!-- Mostrar otros detalles del grupo de productos según sea necesario -->
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}
+

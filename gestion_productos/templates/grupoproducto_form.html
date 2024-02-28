@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if grupo_producto.pk %}
+        Editar Grupo de Producto - {{ grupo_producto.nombre }}
+    {% else %}
+        Crear Nuevo Grupo de Producto
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">
+            {% if grupo_producto.pk %}
+                Editar Grupo de Producto
+            {% else %}
+                Crear Nuevo Grupo de Producto
+            {% endif %}
+        </h1>
+        <form method="post" id="grupo-producto-form">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ grupo_producto.nombre }}">
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ grupo_producto.descripcion }}</textarea>
+            </div>
+            <!-- Agrega aquí más campos del formulario según sea necesario -->
+            <button type="submit" class="btn btn-primary">
+                {% if grupo_producto.pk %}
+                    Actualizar
+                {% else %}
+                    Crear
+                {% endif %}
+            </button>
+        </form>
+    </div>
+</section>
+
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#grupo-producto-form').submit(function(event) {
+            event.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
+
+            var formData = $(this).serialize(); // Serializa los datos del formulario
+            var url = $(this).attr('action'); // Obtiene la URL a la que se enviarán los datos
+
+            // Envía los datos del formulario mediante AJAX
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(response) {
+                    console.log(response); // Respuesta exitosa
+                    window.location.href = '/grupos/';
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText); // Maneja errores
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+

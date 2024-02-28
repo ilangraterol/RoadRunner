@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        Actualizar Producto
+    {% else %}
+        Crear Producto
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-xl-6">
+                <h1 class="text-center mb-4">
+                    {% if form.instance.pk %}
+                        Actualizar Producto
+                    {% else %}
+                        Crear Producto
+                    {% endif %}
+                </h1>
+                <form method="post" id="producto-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">
+                        {% if form.instance.pk %}
+                            Actualizar
+                        {% else %}
+                            Crear
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        
+        $('#producto-form').submit(function(event) {
+            event.preventDefault(); 
+            var formData = $(this).serialize(); 
+            var url = $(this).attr('action'); 
+
+            // Enviar los datos 
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(response) {
+                    
+                    console.log(response);
+                    window.location.href = '/productos/';
+                    
+                },
+                error: function(xhr, status, error) {
+                    
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
